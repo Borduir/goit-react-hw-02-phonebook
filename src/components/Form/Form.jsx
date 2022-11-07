@@ -17,7 +17,6 @@ export default class Form extends Component {
          event.preventDefault();
          const {name, number} = this.state
          const { contacts } = this.props.props.state
-         console.log(contacts)
     if (!contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())){
       this.props.props.setState({ contacts: [...contacts, { id: nanoid(), name: name, number: number }] })
     }
