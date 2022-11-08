@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { nanoid } from 'nanoid'
 
 import Form from './Form/Form'
 import Filtre from './Filtre/Filtre'
@@ -14,15 +15,39 @@ export class App extends Component {
     filtre: '',
   }
   
+  filtreChange = (event) => {
+            const { name, value } = event.currentTarget
+    this.setState({ [name]: value })
+
+    }
+
+  checkIfContactExist = (name, number) => {
+    const {contacts} = this.state
+    if (!contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())){
+      this.setState({ contacts: [...contacts, { id: nanoid(), name: name, number: number }] })
+    }
+    else {alert(`${name} is already in contacts.`)}
+  }
+
+  createFilteredList = () => {
+    const {contacts, filtre} = this.state
+    return contacts.filter(contact => contact.name.toLowerCase().includes(`${filtre.toLowerCase()}`))    
+  }
+
+  deleteContact = (contact) => {
+    const {contacts} = this.state 
+    this.setState({ contacts: contacts.filter(currentContact => currentContact !== contact) })
+  }
+
   render() {
     return (
       <Fragment>
         <div>
           <h2>Phonebook</h2>
-          <Form props={this} />
+          <Form checkIfContactExist={this.checkIfContactExist} />
           <h2>Contacts</h2>
-          <Filtre props={this} />
-          <ContactList props={this} />
+          <Filtre filtreChange={this.filtreChange} value={this.state.filtre} />
+          <ContactList createFilteredList={this.createFilteredList} deleteContact={this.deleteContact} />
       </div>
       </Fragment>
   );

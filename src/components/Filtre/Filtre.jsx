@@ -1,17 +1,12 @@
 import PropTypes from 'prop-types'
 import css from './Filtre.module.css'
 
-export default function Filtre({ props }) {
-const handleChange = (event) => {
-            const { name, value } = event.currentTarget
-    props.setState({ [name]: value })
-
-    }
+export default function Filtre({ filtreChange, value }) {
     return (
         <label className={css.label}> Search by name
             <input
-                value={props.state.filtre}
-                onChange={handleChange}
+                value={value}
+                onChange={filtreChange}
                 className={css.input}
                 type="text"
                 name="filtre"
@@ -23,10 +18,6 @@ const handleChange = (event) => {
 }
 
 Filtre.propTypes = {
-  props: PropTypes.shape({
-      state: PropTypes.shape({
-          contacts: PropTypes.array,
-          filtre: PropTypes.string
-        }),
-    }).isRequired
+    filtreChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired
 }

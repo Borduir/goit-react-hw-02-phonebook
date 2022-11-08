@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { nanoid } from 'nanoid'
 import PropTypes from 'prop-types'
 
 import css from './Form.module.css'
@@ -15,12 +14,8 @@ export default class Form extends Component {
     }
      handleSubmit = event => {
          event.preventDefault();
-         const {name, number} = this.state
-         const { contacts } = this.props.props.state
-    if (!contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())){
-      this.props.props.setState({ contacts: [...contacts, { id: nanoid(), name: name, number: number }] })
-    }
-    else {alert(`${name} is already in contacts.`)}
+         this.props.checkIfContactExist(this.state.name, this.state.number)
+    
         }
     render() {
         const { name, number } = this.state
@@ -58,10 +53,5 @@ export default class Form extends Component {
     }
 }
 Form.propTypes = {
-  props: PropTypes.shape({
-      state: PropTypes.shape({
-          contacts: PropTypes.array,
-          filtre: PropTypes.string
-        }),
-    }).isRequired
+  checkIfContactExist: PropTypes.func.isRequired
 }
